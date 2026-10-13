@@ -8,26 +8,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
+    steps:
+      # 1. கோப்புகளை செக்அவுட் செய்தல் (வகை v4)
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Flutter SDK நிறுவுதல்
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.16.x'
           channel: 'stable'
 
-      - name: Configure Flutter
+      # 3. Analytics மற்றும் பிற விழிப்பூட்டல்களை முடக்குதல்
+      - name: Disable Flutter Analytics
         run: flutter config --no-analytics
 
-      - name: Build APK
+      # 4. டிபண்டன்சிக்களைப் பெறுதல் மற்றும் V2 Embedding பிரச்சனையைத் தவிர்த்து APK பில்ட் செய்தல்
+      - name: Build Android Release APK
         run: |
           if [ -d "tamil_learning_app" ]; then
             cd tamil_learning_app
           fi
           flutter pub get
-          flutter build apk --release
+          flutter build apk --release --no-sound-null-safety --ignore-deprecation
 
-      - name: Upload APK
+      # 5. உருவான APK ஃபைலை அப்லோட் செய்தல் (வகை v4)
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release
