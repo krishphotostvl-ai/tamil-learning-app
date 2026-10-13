@@ -15,14 +15,10 @@ jobs:
           flutter-version: '3.10.x'
           channel: 'stable'
       - run: |
-          if [ -d "tamil_learning_app" ]; then
-            cd tamil_learning_app
-          fi
+          cd tamil_learning_app
           flutter pub get
           flutter build apk --release
       - uses: actions/upload-artifact@v3
         with:
           name: app-release
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            tamil_learning_app/build/app/outputs/flutter-apk/app-release.apk
+          path: tamil_learning_app/build/app/outputs/flutter-apk/app-release.apk
