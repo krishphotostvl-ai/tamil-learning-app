@@ -23,9 +23,13 @@ jobs:
 
       - name: Build Android Release APK
         run: |
-          if [ -d "tamil_learning_app" ]; then
+          # சரியாக எந்த ஃபோல்டரில் pubspec.yaml இருக்கிறது என்பதைத் தேடி உள்ளே செல்வது
+          if [ -d "tamil_learning_app/tamil_learning_app" ]; then
+            cd tamil_learning_app/tamil_learning_app
+          elif [ -d "tamil_learning_app" ]; then
             cd tamil_learning_app
           fi
+          
           flutter pub get
           flutter build apk --release
 
@@ -36,3 +40,4 @@ jobs:
           path: |
             build/app/outputs/flutter-apk/app-release.apk
             tamil_learning_app/build/app/outputs/flutter-apk/app-release.apk
+            tamil_learning_app/tamil_learning_app/build/app/outputs/flutter-apk/app-release.apk
